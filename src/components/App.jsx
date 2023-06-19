@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { nanoid } from 'nanoid';
 import Form from './Form/Form';
 import ContactsList from './contactsList/ContactsList';
@@ -6,10 +6,19 @@ import Filter from './Filter/Filter';
 import { useSelector, useDispatch } from 'react-redux';
 import { filterItems } from 'redux/slices/filterSlice';
 import { addContact, deleteContact } from 'redux/slices/contactsSlice';
+import {
+  getContacts,
+  getFilter,
+  getIsLoading,
+  getError,
+} from 'redux/selectors';
+import { fetchContacts } from 'api-functions/api';
 
 const App = () => {
-  const contacts = useSelector(state => state.contacts);
-  const filter = useSelector(state => state.filter);
+  const contacts = useSelector(getContacts);
+  const filter = useSelector(getFilter);
+  const isLoading = useSelector(getIsLoading);
+  const errorMessage = useSelector(getError);
   const dispatch = useDispatch();
 
   const addContactItem = ({ name, number }) => {
@@ -32,12 +41,16 @@ const App = () => {
     dispatch(filterItems(e.currentTarget.value.trim()));
   };
 
-  const getVisibleContacts = () => {
-    const lowerCaseFilterValue = filter.toLowerCase();
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(lowerCaseFilterValue)
-    );
-  };
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+
+  // const getVisibleContacts = () => {
+  //   const lowerCaseFilterValue = filter.toLowerCase();
+  //   return contacts.filter(contact =>
+  //     contact.name.toLowerCase().includes(lowerCaseFilterValue)
+  //   );
+  // };
 
   const removeContact = id => {
     dispatch(deleteContact(id));
@@ -47,8 +60,9 @@ const App = () => {
     <div>
       <Form onSubmit={addContactItem}></Form>
       <Filter value={filter} onChange={changeFilter}></Filter>
+      {isLoading && !errorMessage && <b>Request in progress...</b>}
       <ContactsList
-        contacts={getVisibleContacts()}
+        contacts={contacts}
         removeContact={removeContact}
       ></ContactsList>
     </div>
