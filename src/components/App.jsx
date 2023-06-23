@@ -62,7 +62,6 @@ const App = () => {
       <Filter value={filter} onChange={changeFilter}></Filter>
       {isLoading && !errorMessage && <b>Request in progress...</b>}
       <ContactsList
-        contacts={contacts}
         removeContact={removeContact}
       ></ContactsList>
     </div>

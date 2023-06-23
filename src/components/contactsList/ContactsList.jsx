@@ -2,8 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { ContactsStyled } from './ContactsList.styled';
 import StyledTrashIcon from './TrashIcon.styled';
+import { getVisibleContacts } from 'redux/selectors';
+import { useSelector } from 'react-redux';
 
-const ContactsList = ({ contacts, removeContact }) => {
+const ContactsList = ({ removeContact }) => {
+  const contacts = useSelector(getVisibleContacts)
   return (
     <div className="contacts">
       <h2>Contacts List:</h2>
@@ -27,6 +30,5 @@ const ContactsList = ({ contacts, removeContact }) => {
 export default ContactsList;
 
 ContactsList.propTypes = {
-  contacts: PropTypes.array.isRequired,
   removeContact: PropTypes.func.isRequired,
 };
