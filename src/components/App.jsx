@@ -30,25 +30,15 @@ const App = () => {
     dispatch(fetchContacts());
   }, [dispatch]);
 
-  // const getVisibleContacts = () => {
-  //   const lowerCaseFilterValue = filter.toLowerCase();
-  //   return contacts.filter(contact =>
-  //     contact.name.toLowerCase().includes(lowerCaseFilterValue)
-  //   );
-  // };
 
-  // const removeContact = id => {
-  //   dispatch(deleteContact(id));
-  // };
+  
 
   return (
     <div>
       <Form></Form>
       <Filter value={filter} onChange={changeFilter}></Filter>
       {isLoading && !errorMessage && <b>Request in progress...</b>}
-      <ContactsList
-        // removeContact={removeContact}
-      ></ContactsList>
+      <ContactsList></ContactsList>
     </div>
   );
 };

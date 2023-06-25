@@ -3,13 +3,14 @@ import { FormStyled } from './Form.styled';
 import { FaPlus } from 'react-icons/fa';
 import { addContact } from 'api-functions/api';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContacts } from 'redux/selectors';
+import { getContacts, getIsLoading } from 'redux/selectors';
 
 const Form = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const dispatch = useDispatch();
   const contacts = useSelector(getContacts);
+  const isLoading = useSelector(getIsLoading);
 
   const handleChange = e => {
     if (e.currentTarget.name === 'name') {
@@ -78,7 +79,7 @@ const Form = () => {
           />
         </label>
 
-        <button type="submit">
+        <button type="submit" disabled={isLoading}>
           <FaPlus></FaPlus> Add Contact
         </button>
       </div>

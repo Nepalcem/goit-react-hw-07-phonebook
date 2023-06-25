@@ -1,12 +1,15 @@
 import React from 'react';
-// import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 import { ContactsStyled } from './ContactsList.styled';
 import StyledTrashIcon from './TrashIcon.styled';
 import { getVisibleContacts } from 'redux/selectors';
 import { useSelector } from 'react-redux';
+import { deleteContact } from 'api-functions/api';
 
-const ContactsList = ({ removeContact }) => {
-  const contacts = useSelector(getVisibleContacts)
+const ContactsList = () => {
+  const dispatch = useDispatch();
+
+  const contacts = useSelector(getVisibleContacts);
   return (
     <div className="contacts">
       <h2>Contacts List:</h2>
@@ -18,7 +21,9 @@ const ContactsList = ({ removeContact }) => {
             </span>
             : <span>{number} </span>
             <StyledTrashIcon
-              onClick={() => removeContact(id)}
+              onClick={() => {
+                dispatch(deleteContact(id));
+              }}
             ></StyledTrashIcon>
           </li>
         ))}
@@ -28,7 +33,3 @@ const ContactsList = ({ removeContact }) => {
 };
 
 export default ContactsList;
-
-// ContactsList.propTypes = {
-//   removeContact: PropTypes.func.isRequired,
-// };
