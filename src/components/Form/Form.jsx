@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { FormStyled } from './Form.styled';
 import { FaPlus } from 'react-icons/fa';
+import { addContact } from 'api-functions/api';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { getContacts } from 'redux/selectors';
 
-const Form = props => {
+const Form = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+  const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
 
   const handleChange = e => {
     if (e.currentTarget.name === 'name') {
@@ -15,9 +20,25 @@ const Form = props => {
     }
   };
 
+  const addContactItem = (name, number) => {
+    if (
+      contacts.find(
+        contact => name.toLowerCase() === contact.name.toLowerCase()
+      )
+    ) {
+      return alert(`${name} is already in contacts`);
+    }
+    const userObj = {
+      name,
+      number,
+    };
+    console.log(userObj);
+    return userObj;
+  };
+
   const submitHandler = e => {
     e.preventDefault();
-    props.onSubmit({ name, number });
+    dispatch(addContact(addContactItem(name, number)));
     setName('');
     setNumber('');
   };
@@ -63,7 +84,3 @@ const Form = props => {
 };
 
 export default Form;
-
-Form.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-};

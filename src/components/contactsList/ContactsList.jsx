@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import { ContactsStyled } from './ContactsList.styled';
 import StyledTrashIcon from './TrashIcon.styled';
 import { getVisibleContacts } from 'redux/selectors';
@@ -29,6 +29,6 @@ const ContactsList = ({ removeContact }) => {
 
 export default ContactsList;
 
-ContactsList.propTypes = {
-  removeContact: PropTypes.func.isRequired,
-};
+// ContactsList.propTypes = {
+//   removeContact: PropTypes.func.isRequired,
+// };
