@@ -43,8 +43,22 @@ export const FormStyled = styled.form`
     height: 30px;
     display: flex;
     align-items: center;
-    gap:10px;
+    gap: 10px;
   }
+
+  & .loading-icon {
+    animation: animate 2s infinite;
+  }
+
+  @keyframes animate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
   & .form__inputs button:hover {
     box-shadow: 0 0 10px rgba(81, 203, 238, 0.8),
       0 0 20px rgba(81, 203, 238, 0.6), 0 0 30px rgba(81, 203, 238, 0.4);

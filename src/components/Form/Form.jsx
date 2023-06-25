@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
 import { FormStyled } from './Form.styled';
 import { FaPlus } from 'react-icons/fa';
+import { LuLoader2 } from 'react-icons/lu';
 import { addContact } from 'api-functions/api';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContacts, getIsLoading } from 'redux/selectors';
+import { getContacts, getIsAddContactPending } from 'redux/selectors';
 
 const Form = () => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const dispatch = useDispatch();
   const contacts = useSelector(getContacts);
-  const isLoading = useSelector(getIsLoading);
+  const isAddContactLoading = useSelector(getIsAddContactPending);
 
   const handleChange = e => {
     if (e.currentTarget.name === 'name') {
-      setName(e.currentTarget.value.trim());
+      setName(e.currentTarget.value);
     } else {
       setNumber(e.currentTarget.value.trim());
     }
@@ -24,7 +25,7 @@ const Form = () => {
     const existingContact = contacts.find(
       contact => name.toLowerCase() === contact.name.toLowerCase()
     );
-    
+
     if (existingContact) {
       return null;
     }
@@ -37,13 +38,13 @@ const Form = () => {
 
   const submitHandler = e => {
     e.preventDefault();
-    const newContact = addContactItem(name,number);
+    const newContact = addContactItem(name, number);
     if (newContact === null) {
-    return alert(`${name} is already in contacts`);
+      return alert(`${name} is already in contacts`);
     } else {
-    dispatch(addContact(addContactItem(name, number)));
-    setName('');
-    setNumber('');
+      dispatch(addContact(addContactItem(name, number)));
+      setName('');
+      setNumber('');
     }
   };
 
@@ -79,8 +80,13 @@ const Form = () => {
           />
         </label>
 
-        <button type="submit" disabled={isLoading}>
-          <FaPlus></FaPlus> Add Contact
+        <button type="submit" disabled={isAddContactLoading}>
+          {isAddContactLoading ? (
+            <LuLoader2 className="loading-icon"></LuLoader2>
+          ) : (
+            <FaPlus></FaPlus>
+          )}{' '}
+          Add Contact
         </button>
       </div>
     </FormStyled>
