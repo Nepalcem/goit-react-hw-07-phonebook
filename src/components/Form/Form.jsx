@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { FormStyled } from './Form.styled';
 import { FaPlus } from 'react-icons/fa';
 import { addContact } from 'api-functions/api';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getContacts } from 'redux/selectors';
 
 const Form = () => {
@@ -21,26 +20,30 @@ const Form = () => {
   };
 
   const addContactItem = (name, number) => {
-    if (
-      contacts.find(
-        contact => name.toLowerCase() === contact.name.toLowerCase()
-      )
-    ) {
-      return alert(`${name} is already in contacts`);
+    const existingContact = contacts.find(
+      contact => name.toLowerCase() === contact.name.toLowerCase()
+    );
+    
+    if (existingContact) {
+      return null;
     }
     const userObj = {
       name,
       number,
     };
-    console.log(userObj);
     return userObj;
   };
 
   const submitHandler = e => {
     e.preventDefault();
+    const newContact = addContactItem(name,number);
+    if (newContact === null) {
+    return alert(`${name} is already in contacts`);
+    } else {
     dispatch(addContact(addContactItem(name, number)));
     setName('');
     setNumber('');
+    }
   };
 
   return (
